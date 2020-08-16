@@ -152,13 +152,18 @@ class Controller
     {
         // Вывод формы для изменения задачи 
         $result = '';
-        $user = $this->auth_model->Get_By_Id($id);
-        if (isset($_SESSION['user_id']) && $user !== null && $user['status'] == 1) {
-            $stmt = (new Model())->Get_Detail_By_Id($id);
-            for ($i = 0; $i < $stmt->rowCount(); $i++) {
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                $result .= $this->view->Edit_Form($row['id'], $row['user_name'], $row['user_email'], $row['description'], $row['status']);
+        if (isset($_SESSION['user_id'])) {
+            $user = $this->auth_model->Get_By_Id($_SESSION['user_id']);
+            if ($user != null && $user['status'] == 1) {
+                $user = $this->auth_model->Get_By_Id($id);
+                $stmt = (new Model())->Get_Detail_By_Id($id);
+                for ($i = 0; $i < $stmt->rowCount(); $i++) {
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $result .= $this->view->Edit_Form($row['id'], $row['user_name'], $row['user_email'], $row['description'], $row['status']);
+                }
             }
+        }else{
+            return $this->project_view->Error_Message('Ошибка! Вы не авторизованы!');
         }
 
         return $result;

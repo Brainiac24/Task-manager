@@ -18,7 +18,7 @@ class Model
     {
         // Выборка списка задач
         try {
-            $stmt = $this->db->prepare('SELECT * FROM TASKS ORDER BY ' . $order_by . ' ' . $order_type . ' LIMIT 3 OFFSET ' . (($page - 1) * 3));
+            $stmt = $this->db->prepare('SELECT * FROM tasks ORDER BY ' . $order_by . ' ' . $order_type . ' LIMIT 3 OFFSET ' . (($page - 1) * 3));
             $stmt->execute();
             return $stmt;
         } catch (\Throwable $th) {
@@ -32,7 +32,7 @@ class Model
         // Выборка количества задач
         $row_count = 0;
         try {
-            $stmt = $this->db->prepare('SELECT Count(id) as row_count FROM TASKS');
+            $stmt = $this->db->prepare('SELECT Count(id) as row_count FROM tasks');
             $stmt->execute();
 
             for ($i = 0; $i < $stmt->rowCount(); $i++) {
